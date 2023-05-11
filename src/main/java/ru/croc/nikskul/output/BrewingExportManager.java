@@ -39,10 +39,6 @@ public class BrewingExportManager {
 
                 String employees = String.join(", ", names);
 
-                if (employees.isEmpty()) {
-                    continue;
-                }
-
                 writer.write(date.format(DateTimeFormatter.ofPattern("dd.MM.yyyy - ")) + employees);
                 writer.newLine();
             }
