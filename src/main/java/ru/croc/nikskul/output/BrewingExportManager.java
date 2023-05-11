@@ -25,7 +25,7 @@ public class BrewingExportManager {
         URI destination
     ) {
 
-        var brewings = brewingLogs.stream()
+        List<BrewingLog> brewings = brewingLogs.stream()
             .filter(log -> {
                 var goodTime = log.getTea().getTeaType().getBrewingTimeTo() - log.getTea().getTeaType().getBrewingTimeFrom();
 
@@ -33,7 +33,7 @@ public class BrewingExportManager {
                     log.getBrewingStart(),
                     log.getBrewingEnd()
                 ) <= goodTime;
-            });
+            }).collect(Collectors.toList());
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(destination.getPath()))) {
 
@@ -46,7 +46,7 @@ public class BrewingExportManager {
             dates.forEach(date -> {
                 try {
                     StringBuilder builder = new StringBuilder();
-                    var dateBrew = brewings.filter(brew ->
+                    var dateBrew = brewings.stream().filter(brew ->
                             LocalDate.from(brew.getBrewingStart())
                                 .compareTo(date) == 0)
                         .collect(Collectors.toSet());
