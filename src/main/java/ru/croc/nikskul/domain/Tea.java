@@ -2,6 +2,9 @@ package ru.croc.nikskul.domain;
 
 import java.util.Objects;
 
+/**
+ * Чай.
+ */
 public class Tea {
 
     private Integer id;

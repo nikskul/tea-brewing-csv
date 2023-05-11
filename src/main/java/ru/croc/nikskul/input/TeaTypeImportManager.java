@@ -1,21 +1,20 @@
 package ru.croc.nikskul.input;
 
-import ru.croc.nikskul.domain.Tea;
 import ru.croc.nikskul.domain.TeaType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TeaTypeImportManager {
 
-    public List<TeaType> importTeaTypes(URI uri) {
-        List<TeaType> teaTypes = new ArrayList<>();
+    public Map<Integer, TeaType> importTeaTypes(Path teaTypeStorage) throws IOException {
+        Map<Integer, TeaType> teaTypes = new HashMap<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(uri.getPath()))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(teaTypeStorage.toFile()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
@@ -28,10 +27,8 @@ public class TeaTypeImportManager {
                 teaType.setTempFrom(Integer.valueOf(info[4]));
                 teaType.setTempTo(Integer.valueOf(info[5]));
 
-                teaTypes.add(teaType);
+                teaTypes.put(teaType.getId(), teaType);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
         return teaTypes;

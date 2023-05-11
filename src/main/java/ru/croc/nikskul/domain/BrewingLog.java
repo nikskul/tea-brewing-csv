@@ -3,6 +3,9 @@ package ru.croc.nikskul.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Запись о заваривании.
+ */
 public class BrewingLog {
 
     private String employeeName;
@@ -59,6 +62,7 @@ public class BrewingLog {
     public String toString() {
         return "BrewingLog{" +
             "employeeName='" + employeeName + '\'' +
+            ", tea=" + tea +
             ", brewingStart=" + brewingStart +
             ", brewingEnd=" + brewingEnd +
             ", brewingTemp=" + brewingTemp +
@@ -70,11 +74,11 @@ public class BrewingLog {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         BrewingLog that = (BrewingLog) object;
-        return Objects.equals(employeeName, that.employeeName) && Objects.equals(brewingStart, that.brewingStart) && Objects.equals(brewingEnd, that.brewingEnd) && Objects.equals(brewingTemp, that.brewingTemp);
+        return Objects.equals(employeeName, that.employeeName) && Objects.equals(tea, that.tea) && Objects.equals(brewingStart, that.brewingStart) && Objects.equals(brewingEnd, that.brewingEnd) && Objects.equals(brewingTemp, that.brewingTemp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employeeName, brewingStart, brewingEnd, brewingTemp);
+        return Objects.hash(employeeName, tea, brewingStart, brewingEnd, brewingTemp);
     }
 }

@@ -4,12 +4,11 @@ import ru.croc.nikskul.domain.Tea;
 import ru.croc.nikskul.domain.TeaType;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TeaImportManager {
 
@@ -19,12 +18,14 @@ public class TeaImportManager {
         this.teaTypeImportManager = teaTypeImportManager;
     }
 
-    public List<Tea> importTea(URI teaUri, URI typesUri) {
+    public Map<Integer, Tea> importTea(Path teaStorage, Path teaTypeStorage) throws IOException {
 
-        List<TeaType> teaTypes = new ArrayList<>(teaTypeImportManager.importTeaTypes(typesUri));
+        Map<Integer, TeaType> teaTypes = new HashMap<>(
+            teaTypeImportManager.importTeaTypes(teaTypeStorage)
+        );
 
-        List<Tea> teas = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(teaUri.getPath()))) {
+        Map<Integer, Tea> teas = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(teaStorage.toFile()))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] info = line.split(";");
@@ -32,16 +33,10 @@ public class TeaImportManager {
                 Tea tea = new Tea();
                 tea.setId(Integer.valueOf(info[0]));
                 tea.setName(info[1]);
-                tea.setTeaType(teaTypes.stream()
-                    .filter(type -> type.getId().equals(Integer.valueOf(info[2])))
-                    .findFirst()
-                    .get()
-                );
+                tea.setTeaType(teaTypes.get(Integer.valueOf(info[2])));
 
-                teas.add(tea);
+                teas.put(tea.getId(), tea);
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
         return teas;
