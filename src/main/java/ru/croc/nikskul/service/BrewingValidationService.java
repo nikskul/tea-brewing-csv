@@ -26,12 +26,12 @@ public class BrewingValidationService {
      * false - если хотя бы одно заваривание не прошло проверку
      */
     public boolean validateIsNoWarns(List<BrewingLog> brewingLogs) {
-        boolean isHaveWarns = false;
         for (var check : checks) {
-            isHaveWarns = brewingLogs.parallelStream()
-                .map(check::checkIsValid)
-                .anyMatch(Predicate.isEqual(false));
+            boolean isHaveWarns = brewingLogs.parallelStream()
+                .anyMatch(Predicate.not(check::checkIsValid));
+            if (isHaveWarns)
+                return false;
         }
-        return !isHaveWarns;
+        return true;
     }
 }
