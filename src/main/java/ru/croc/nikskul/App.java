@@ -7,6 +7,7 @@ import ru.croc.nikskul.input.BrewingLogImportManager;
 import ru.croc.nikskul.input.TeaImportManager;
 import ru.croc.nikskul.input.TeaTypeImportManager;
 import ru.croc.nikskul.output.BrewingExportManager;
+import ru.croc.nikskul.service.BrewingGroupByDateUseCase;
 import ru.croc.nikskul.service.BrewingValidationService;
 
 import java.io.IOException;
@@ -25,7 +26,8 @@ public class App {
             ),
             new BrewingLogImportManager(),
             new BrewingExportManager(
-                new BrewingValidationService()
+                new BrewingValidationService(),
+                new BrewingGroupByDateUseCase()
             )
         );
 

@@ -6,7 +6,6 @@ import ru.croc.nikskul.check.BrewingTimeCheck;
 import ru.croc.nikskul.domain.BrewingLog;
 
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * Компонент для проверки завариваний.
@@ -25,11 +24,11 @@ public class BrewingValidationService {
      * @return true - если все заваривания прошли проверку.
      * false - если хотя бы одно заваривание не прошло проверку
      */
-    public boolean validateIsNoWarns(List<BrewingLog> brewingLogs) {
+    public boolean isAllChecksPassed(List<BrewingLog> brewingLogs) {
         for (var check : checks) {
-            boolean isHaveWarns = brewingLogs.parallelStream()
-                .anyMatch(Predicate.not(check::checkIsValid));
-            if (isHaveWarns)
+            boolean isPassed = brewingLogs.parallelStream()
+                .allMatch(check::checkIsValid);
+            if (!isPassed)
                 return false;
         }
         return true;
